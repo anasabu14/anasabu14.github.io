@@ -1,0 +1,25 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "description": "A simple bar chart with embedded data.",
+  "data": {
+    "url": "https://api.ons.gov.uk/timeseries/G6RE/dataset/MM22/data",
+    "format":{
+      "property": "months"
+    }
+  },
+  "title": {
+    "text": "Exports of Motor Vehicles, Trailers and Semi-Trailers"
+  },
+  "transform":[
+    {"as": "month_num","calculate": "indexof(['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'], datum.month)+1"},
+    {"as": "month_num", "calculate": "pad(datum.month_num, 2, '0', 'left')"},
+    {"as": "myDate","calculate": "datum.year + '-'+datum.month_num+'-01' "},
+        {"as": "myDate","calculate": "toDate(datum.myDate)"}
+
+  ],
+  "mark": "line",
+  "encoding": {
+    "x": {"field": "myDate", "type": "temporal"},
+    "y": {"field": "value", "type": "quantitative"}
+  }
+}
